@@ -16,10 +16,9 @@ A web application for uploading and downloading files to **Shelby Protocol** usi
 
 ## 🎯 Application Screenshot
 
-![Shelby Upload] 
+![Shelby Upload](./public/screenshot.png)
 
 ## 🔧 Technologies Used
-
 - **Frontend**: React 18 + TypeScript + Vite
 - **Blockchain**: Aptos Testnet
 - **Storage**: Shelby Protocol
