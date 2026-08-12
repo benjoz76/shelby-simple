@@ -8,7 +8,7 @@
       ]
     },
     {
-      "source": "/(.*).wasm",
+      "source": "/assets/(.*).wasm",
       "headers": [
         { "key": "Content-Type", "value": "application/wasm" }
       ]

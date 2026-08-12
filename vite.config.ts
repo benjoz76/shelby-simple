@@ -30,16 +30,17 @@ export default defineConfig({
 
   build: {
     target: 'esnext',
+    assetsDir: 'assets',
     rollupOptions: {
       output: {
         manualChunks: undefined,
+        assetFileNames: 'assets/[name]-[hash][extname]',
       },
     },
   },
 
   server: {
     port: 3000,
-    // 🔥 FIX: COEP/COOP headers untuk development (wajib untuk WASM)
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
@@ -48,7 +49,6 @@ export default defineConfig({
 
   preview: {
     port: 4173,
-    // 🔥 FIX: COEP/COOP headers untuk preview build
     headers: {
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
