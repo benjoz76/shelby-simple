@@ -27,8 +27,12 @@ export interface DownloadParams {
   onError?: (error: any) => void;
 }
 
-// ========== FUNGSI UPLOAD (BUKAN HOOK) ==========
-// Fungsi ini akan dipanggil dari komponen dengan useUploadBlobs
+// ========== HELPER: Sanitize filename ==========
+const sanitizeFileName = (fileName: string): string => {
+  return fileName.replace(/\s+/g, '_');
+};
+
+// ========== FUNGSI UPLOAD ==========
 export const uploadFile = async ({
   file,
   account,
@@ -37,7 +41,8 @@ export const uploadFile = async ({
   onError
 }: UploadParams) => {
   try {
-    console.log("📤 Uploading file:", file.name);
+    const safeName = sanitizeFileName(file.name);
+    console.log("📤 Uploading file:", safeName);
     
     const fileData = new Uint8Array(await file.arrayBuffer());
     
@@ -46,8 +51,7 @@ export const uploadFile = async ({
       account
     };
 
-    // RETURN PROMISE, BUKAN PAKAI HOOK
-    return { signer, fileData, blobName: file.name };
+    return { signer, fileData, blobName: safeName };
     
   } catch (error) {
     console.error("❌ File read error:", error);
@@ -66,14 +70,15 @@ export const deleteFile = async ({
   onError
 }: DeleteParams) => {
   try {
-    console.log("🗑️ Deleting file:", fileName);
+    const safeName = sanitizeFileName(fileName);
+    console.log("🗑️ Deleting file:", safeName);
     
     const signer = {
       signAndSubmitTransaction,
       account
     };
 
-    return { signer, accountAddress, blobName: fileName };
+    return { signer, accountAddress, blobName: safeName };
     
   } catch (error) {
     console.error("❌ Delete error:", error);
@@ -92,7 +97,8 @@ export const downloadFile = async ({
   onError
 }: DownloadParams): Promise<Blob | null> => {
   try {
-    const downloadUrl = `${nodeUrl}/v1/blobs/${accountAddress}/${encodeURIComponent(fileName)}`;
+    const safeName = sanitizeFileName(fileName);
+    const downloadUrl = `${nodeUrl}/v1/blobs/${accountAddress}/${encodeURIComponent(safeName)}`;
     console.log("📥 Download URL:", downloadUrl);
     
     const response = await fetch(downloadUrl, {
@@ -110,11 +116,10 @@ export const downloadFile = async ({
     const blob = await response.blob();
     console.log("✅ Download successful! Size:", blob.size, "bytes");
     
-    // Trigger browser download
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = fileName;
+    a.download = safeName;
     a.click();
     window.URL.revokeObjectURL(url);
     
@@ -138,7 +143,8 @@ export const previewFile = async ({
   onError
 }: DownloadParams): Promise<string | null> => {
   try {
-    const previewUrl = `${nodeUrl}/v1/blobs/${accountAddress}/${encodeURIComponent(fileName)}`;
+    const safeName = sanitizeFileName(fileName);
+    const previewUrl = `${nodeUrl}/v1/blobs/${accountAddress}/${encodeURIComponent(safeName)}`;
     console.log("🔍 Preview URL:", previewUrl);
     
     const response = await fetch(previewUrl, {
