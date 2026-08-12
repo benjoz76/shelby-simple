@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import wasm from 'vite-plugin-wasm'
 import topLevelAwait from 'vite-plugin-top-level-await'
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
   base: '/',
@@ -11,17 +11,19 @@ export default defineConfig({
     react(),
     wasm(),
     topLevelAwait(),
+    // Plugin ini menangani polyfill Buffer & Node globals di dev MAUPUN production build
+    nodePolyfills({
+      include: ['buffer', 'process', 'util'],
+      globals: {
+        Buffer: true,
+        global: true,
+        process: true,
+      },
+    }),
   ],
 
   optimizeDeps: {
     exclude: ['@shelby-protocol/clay-codes'],
-    esbuildOptions: {
-      plugins: [
-        NodeGlobalsPolyfillPlugin({
-          buffer: true
-        })
-      ]
-    }
   },
 
   define: {

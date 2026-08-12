@@ -45,6 +45,9 @@
   "@wallet-standard/core": "^1.1.1",
   
     
+  "buffer": "^6.0.3",
+  
+    
   "react": "^18.3.1",
   
     
@@ -74,6 +77,9 @@
   
     
   "vite": "^5.4.11",
+  
+    
+  "vite-plugin-node-polyfills": "^0.28.0",
   
     
   "vite-plugin-top-level-await": "^1.6.0",
