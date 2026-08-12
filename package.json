@@ -30,10 +30,10 @@
   "@aptos-labs/wallet-adapter-react": "^7.2.8",
   
     
-  "@shelby-protocol/react": "^1.0.3",
+  "@shelby-protocol/react": "^4.1.0",
   
     
-  "@shelby-protocol/sdk": "^0.2.3",
+  "@shelby-protocol/sdk": "^0.7.0",
   
     
   "@tanstack/react-query": "^5.90.21",
@@ -53,6 +53,9 @@
   },
   
   "devDependencies": {
+  
+    
+  "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
   
     
   "@types/node": "^20.11.0",
@@ -76,7 +79,7 @@
   "vite-plugin-top-level-await": "^1.6.0",
   
     
-  "vite-plugin-wasm": "^3.5.0"
+  "vite-plugin-wasm": "^3.6.0"
   
   }
 }

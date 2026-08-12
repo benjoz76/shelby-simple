@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill'
 import wasm from 'vite-plugin-wasm'
 import topLevelAwait from 'vite-plugin-top-level-await'
 
@@ -9,23 +10,17 @@ export default defineConfig({
     wasm(),
     topLevelAwait(),
   ],
-  server: {
-    port: 5173,
-    host: true,
-  },
   optimizeDeps: {
-    exclude: [
-      '@shelby-protocol/sdk',
-      '@wallet-standard/core',
-      '@telegram-apps/bridge'
-    ],
+    exclude: ['@shelby-protocol/clay-codes'],
+    esbuildOptions: {
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true
+        })
+      ]
+    }
   },
-  build: {
-    rollupOptions: {
-      external: [
-        '@wallet-standard/core',
-        '@telegram-apps/bridge'
-      ],
-    },
-  },
+  define: {
+    global: 'globalThis',
+  }
 })
