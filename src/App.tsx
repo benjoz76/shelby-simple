@@ -16,6 +16,7 @@ import {
 } from "./utils/shelbyUpload"
 import './App.css'
 import './toast.css'
+import './deleteModal.css'
 
 const SHELBY_CONFIG = {
   network: "shelbynet",
@@ -62,6 +63,7 @@ function App() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewFileUrl, setPreviewFileUrl] = useState<{ url: string; name: string } | null>(null)
   const [toast, setToast] = useState<{ type: 'success' | 'error' | 'info'; title: string; message: string } | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<{ rawName: string; cleanName: string } | null>(null)
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const showToast = (type: 'success' | 'error' | 'info', title: string, message: string) => {
@@ -200,10 +202,14 @@ function App() {
     window.open(explorerUrl, '_blank')
   }
 
-  const handleDelete = async (fileName: string) => {
-    const cleanName = cleanBlobName(fileName)
-    if (!accountAddress) return
-    if (!window.confirm(`Delete ${cleanName}?`)) return
+  const handleDelete = (fileName: string) => {
+    if (!accountAddress || isDeleting) return
+    setPendingDelete({ rawName: fileName, cleanName: cleanBlobName(fileName) })
+  }
+
+  const confirmDelete = async () => {
+    if (!pendingDelete || !accountAddress || isDeleting) return
+    const { cleanName } = pendingDelete
 
     try {
       const { signer, blobName } = await deleteFile({
@@ -215,6 +221,7 @@ function App() {
 
       deleteMutation.mutate({ signer, blobName }, {
         onSuccess: () => {
+          setPendingDelete(null)
           showToast('success', 'File deleted', `${cleanName} was removed from your Shelby storage.`)
           refetchBlobs()
         },
@@ -429,6 +436,21 @@ function App() {
               <span>{toast.message}</span>
             </div>
             <button className="toast-close" onClick={() => setToast(null)} aria-label="Dismiss notification">×</button>
+          </div>
+        </div>
+      )}
+
+      {pendingDelete && (
+        <div className="modal-overlay" onClick={() => !isDeleting && setPendingDelete(null)}>
+          <div className="modal delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-title" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-warning" aria-hidden="true">!</div>
+            <h3 id="delete-title">Delete this file?</h3>
+            <p className="delete-modal-copy">This will remove the file from your Shelby storage. Make sure you really want to continue.</p>
+            <div className="delete-filename">{pendingDelete.cleanName}</div>
+            <div className="delete-modal-actions">
+              <button className="brutal-btn white" onClick={() => setPendingDelete(null)} disabled={isDeleting}>Cancel</button>
+              <button className="brutal-btn delete-confirm-btn" onClick={confirmDelete} disabled={isDeleting}>{isDeleting ? 'Deleting…' : 'Delete File'}</button>
+            </div>
           </div>
         </div>
       )}
