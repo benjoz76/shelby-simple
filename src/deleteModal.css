@@ -1,0 +1,58 @@
+.delete-modal {
+  width: min(500px, 100%);
+  background: #fffdfa;
+}
+
+.delete-warning {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  background: #ff7b78;
+  border: 3px solid #111;
+  box-shadow: 5px 5px 0 #111;
+  font-size: 30px;
+  font-weight: 1000;
+  margin-bottom: 16px;
+  transform: rotate(-3deg);
+}
+
+.delete-modal h3 {
+  margin: 0;
+  font-size: 34px;
+}
+
+.delete-modal-copy {
+  margin-top: 12px;
+  font-weight: 750;
+  line-height: 1.5;
+}
+
+.delete-filename {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: #ffd8d8;
+  border: 2px solid #111;
+  box-shadow: 3px 3px 0 #111;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.delete-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.delete-confirm-btn {
+  background: #ff7b78;
+}
+
+@media (max-width: 520px) {
+  .delete-modal-actions {
+    grid-template-columns: 1fr;
+  }
+}
