@@ -233,10 +233,10 @@ function App() {
 
       <header className="topbar shell">
         <button className="brand" onClick={() => scrollTo('home')} aria-label="Go to home">
-          <span className="brand-mark">S</span>
+          <span className="brand-mark" aria-hidden="true">⬢</span>
           <span>
-            <strong>Shelby</strong>
-            <small>Decentralized Storage on Aptos</small>
+            <strong>Shelby-Simple</strong>
+            <small>Powered by Shelby</small>
           </span>
         </button>
 
@@ -263,9 +263,9 @@ function App() {
         <section className="hero-grid">
           <div className="hero-copy">
             <span className="eyebrow">DECENTRALIZED. SECURE. YOURS.</span>
-            <h1>Store Files<br />on <span>Shelby</span></h1>
+            <h1>Store Files<br />with <span>Shelby-Simple</span></h1>
             <p>
-              Upload, store, preview, download, and manage your files through Shelby Protocol on Shelbynet.
+              A simple interface for uploading, storing, previewing, downloading, and managing files through Shelby Protocol on Shelbynet.
             </p>
 
             <div className="hero-actions">
@@ -308,7 +308,7 @@ function App() {
               >
                 {isUploading ? 'Uploading…' : connected ? '▣ Choose File' : 'Connect Wallet'}
               </button>
-              <small>Stored on Shelbynet</small>
+              <small>Powered by Shelby • Stored on Shelbynet</small>
             </div>
           </div>
         </section>
@@ -324,7 +324,7 @@ function App() {
           <div className="section-heading">
             <div>
               <span className="section-tag">YOUR FILES</span>
-              <p>Manage, preview, download, or delete files stored on Shelby.</p>
+              <p>Manage, preview, download, or delete files stored through Shelby.</p>
             </div>
             {connected && <button className="brutal-btn white" onClick={handleExplorer}>Open Explorer ↗</button>}
           </div>
@@ -367,7 +367,7 @@ function App() {
           {connected && !isLoadingBlobs && !blobsError && blobs.length === 0 && (
             <div className="empty-state">
               <strong>No files uploaded yet</strong>
-              <p>Use the upload box above to store your first file on Shelby.</p>
+              <p>Use the upload box above to store your first file with Shelby-Simple.</p>
             </div>
           )}
 
@@ -383,10 +383,10 @@ function App() {
         <section id="about" className="about-panel">
           <div>
             <span className="section-tag pink-tag">ABOUT</span>
-            <h2>Built for a more open internet.</h2>
+            <h2>Shelby-Simple, powered by Shelby.</h2>
           </div>
           <p>
-            Shelby Upload is a community-built interface for decentralized file storage using Shelby Protocol with Aptos as the coordination layer. It runs on Shelbynet and keeps the core experience simple: connect, upload, manage, and retrieve your files.
+            Shelby-Simple is a community-built interface for decentralized file storage powered by Shelby Protocol with Aptos as the coordination layer. It runs on Shelbynet and keeps the experience simple: connect, upload, manage, and retrieve your files.
           </p>
           <div className="about-badges">
             <span>Built on Aptos</span>
@@ -398,7 +398,7 @@ function App() {
 
       <footer className="footer">
         <div className="shell footer-inner">
-          <div className="footer-brand"><strong>Shelby</strong><span>Decentralized Storage on Aptos</span></div>
+          <div className="footer-brand"><strong>Shelby-Simple</strong><span>Powered by Shelby</span></div>
           <div className="footer-links">
             <a href="https://docs.shelby.xyz" target="_blank" rel="noreferrer">Docs</a>
             <a href="https://github.com/benjoz76/shelby-simple" target="_blank" rel="noreferrer">GitHub</a>
@@ -413,7 +413,7 @@ function App() {
         <div className="modal-overlay" onClick={() => setShowWalletList(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <span className="section-tag">SELECT WALLET</span>
-            <h3>Connect to Shelby</h3>
+            <h3>Connect to Shelby-Simple</h3>
             {availableWallets.length === 0 ? (
               <p className="modal-message">No wallet detected. Please install Petra Wallet first.</p>
             ) : (
