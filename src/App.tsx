@@ -15,6 +15,7 @@ import {
   isImageFile
 } from "./utils/shelbyUpload"
 import './App.css'
+import './toast.css'
 
 const SHELBY_CONFIG = {
   network: "shelbynet",
@@ -60,6 +61,14 @@ function App() {
   const [showWalletList, setShowWalletList] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewFileUrl, setPreviewFileUrl] = useState<{ url: string; name: string } | null>(null)
+  const [toast, setToast] = useState<{ type: 'success' | 'error' | 'info'; title: string; message: string } | null>(null)
+  const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const showToast = (type: 'success' | 'error' | 'info', title: string, message: string) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    setToast({ type, title, message })
+    toastTimerRef.current = setTimeout(() => setToast(null), 3200)
+  }
 
   const availableWallets = wallets || []
 
@@ -117,7 +126,7 @@ function App() {
     if (!file) return
 
     if (!connected || !account || !accountAddress || !signAndSubmitTransaction) {
-      alert("Wallet not connected properly")
+      showToast('error', 'Wallet not connected', 'Connect your wallet before uploading a file.')
       return
     }
 
@@ -144,15 +153,15 @@ function App() {
         }
       }, {
         onSuccess: () => {
-          alert("✅ Upload successful!")
+          showToast('success', 'Upload successful!', `${blobName} is now stored on Shelby.`)
           refetchBlobs()
         },
         onError: (error) => {
-          alert("Upload failed: " + error.message)
+          showToast('error', 'Upload failed', error.message)
         }
       })
     } catch (error) {
-      alert("Upload failed: " + (error as Error).message)
+      showToast('error', 'Upload failed', (error as Error).message)
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = ''
     }
@@ -166,7 +175,7 @@ function App() {
       nodeUrl: SHELBY_CONFIG.nodeUrl,
       apiKey: SHELBY_CONFIG.apiKey,
       onError: (error) => {
-        alert("Download failed: " + error.message)
+        showToast('error', 'Download failed', error.message)
       }
     })
   }
@@ -179,7 +188,7 @@ function App() {
       nodeUrl: SHELBY_CONFIG.nodeUrl,
       apiKey: SHELBY_CONFIG.apiKey,
       onError: (error) => {
-        alert("Preview failed: " + error.message)
+        showToast('error', 'Preview failed', error.message)
       }
     })
     if (url) setPreviewFileUrl({ url, name: cleanBlobName(fileName) })
@@ -206,15 +215,15 @@ function App() {
 
       deleteMutation.mutate({ signer, blobName }, {
         onSuccess: () => {
-          alert("✅ File deleted")
+          showToast('success', 'File deleted', `${cleanName} was removed from your Shelby storage.`)
           refetchBlobs()
         },
         onError: (error) => {
-          alert("Delete failed: " + error.message)
+          showToast('error', 'Delete failed', error.message)
         }
       })
     } catch (error) {
-      alert("Delete failed: " + (error as Error).message)
+      showToast('error', 'Delete failed', (error as Error).message)
     }
   }
 
@@ -408,6 +417,21 @@ function App() {
           <span className="footer-note">Built for a more open internet. ♥</span>
         </div>
       </footer>
+
+      {toast && (
+        <div className="toast-stack" aria-live="polite" aria-atomic="true">
+          <div className={`brutal-toast ${toast.type}`}>
+            <div className="toast-icon" aria-hidden="true">
+              {toast.type === 'success' ? '✓' : toast.type === 'error' ? '!' : 'i'}
+            </div>
+            <div className="toast-copy">
+              <strong>{toast.title}</strong>
+              <span>{toast.message}</span>
+            </div>
+            <button className="toast-close" onClick={() => setToast(null)} aria-label="Dismiss notification">×</button>
+          </div>
+        </div>
+      )}
 
       {showWalletList && (
         <div className="modal-overlay" onClick={() => setShowWalletList(false)}>
