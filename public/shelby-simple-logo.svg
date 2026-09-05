@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Shelby-Simple logo">
+  <rect width="128" height="128" rx="24" fill="#fffdf7"/>
+  <path d="M64 10 112 36v56L64 118 16 92V36Z" fill="#111" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M64 23 98 41 64 60 30 41Z" fill="#ffe542" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M30 49 64 68 98 49v18L64 86 30 67Z" fill="#8a5cff" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M30 75 64 94 98 75v18l-34 19-34-19Z" fill="#2d92ff" stroke="#111" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M52 37h24" stroke="#111" stroke-width="6" stroke-linecap="round"/>
+  <path d="M56 46h16" stroke="#111" stroke-width="6" stroke-linecap="round"/>
+</svg>
